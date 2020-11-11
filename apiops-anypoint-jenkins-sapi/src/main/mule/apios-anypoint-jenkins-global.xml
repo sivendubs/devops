@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<configuration doc:name="Configuration" doc:id="0e6fa563-93cf-4bb0-8601-218d6d0e3822" defaultErrorHandler-ref="apios-anypoint-jenkins-global-error-handler" />
+	<http:listener-config name="httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="${http.port}" />
+    </http:listener-config>
+	<db:config name="databaseConfig" doc:name="Database Config" doc:id="0588f32a-241d-4fd6-951f-5c2f424a6fe1" >
+		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
+	</db:config>
+	
+	<global-property doc:name="Global Property" doc:id="1d28ffe5-bb8d-4d11-a101-e76f010e33df" name="env" value="dev" />
+	<error-handler name="apios-anypoint-jenkins-global-error-handler" doc:id="cb21ef72-43a2-4760-8210-34218a19b93b" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c9013092-3e5c-4c63-a9fe-4464df54a9ef" type="DB:BAD_SQL_SYNTAX">
+			<set-variable value="404" doc:name="set httpstatus" doc:id="2b0b02f0-f435-4c1d-966f-abf9f1e6a65d" variableName="httpstatus"/>
+			<flow-ref doc:name="apios-anypoint-jenkins-global-flow" doc:id="589177ab-476e-4f00-a323-7e9f234f28af" name="apios-anypoint-jenkins-global-flow"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="408a5c19-eb3a-435f-b7cc-9f470dc28600" type="ANY">
+			<set-variable value="500" doc:name="set httpstatus" doc:id="f0f639cc-ddf8-4d59-bdfd-50a141b65a09" variableName="httpstatus" />
+			<flow-ref doc:name="apios-anypoint-jenkins-global-flow" doc:id="7d3c4475-b0be-4ace-b425-3d70c972dd29" name="apios-anypoint-jenkins-global-flow" />
+		</on-error-propagate>
+	</error-handler>
+	<flow name="apios-anypoint-jenkins-global-flow" doc:id="2f3161ae-e643-41a3-94de-dc5973bf0f9c" >
+		<ee:transform doc:name="Transform Message" doc:id="1ba3432e-5ac3-4a54-88d0-795eb98404d8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	code: vars.httpStatus,
+	message: error.errorType.identifier,
+	description: error.description,
+	dateTime: now() as String 
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
