@@ -74,7 +74,7 @@ pipeline {
         		    cucumber(failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: 'cucumber.json', jsonReportDirectory: 'cucumber-API-Framework/target', pendingStepsNumber: -1, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1)
                   }
             }
-    /*    stage('Archetype'){
+          /*stage('Archetype'){
         	steps {
                     sh "mvn -f cucumber-API-Framework/pom.xml archetype:create-from-project"
                     sh "mvn -f cucumber-API-Framework/target/generated-sources/archetype/pom.xml clean install"
@@ -85,8 +85,8 @@ pipeline {
         	    	sh 'mvn -f apiops-anypoint-jenkins-sapi/pom.xml package deploy -DmuleDeploy -Danypoint.username=joji4 -Danypoint.password=Canadavisa25@ -DapplicationName=apiops-anypoint-jenkins-sapi -Dcloudhub.region=us-east-2'
 			
              	  }
-            }
-        /*
+            }*/
+        
  
     	stage('Email') {
       		steps {
