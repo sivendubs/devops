@@ -46,7 +46,7 @@ pipeline {
       steps {
         script {
 		LAST_STARTED = env.STAGE_NAME
-          	dockerImage= docker.build("joji/apiops-anypoint-jenkins-sapi")
+          	sh "dockerImage= docker.build("sivendu/apiops-anypoint-jenkins-sapi")"
         }
 
         echo 'image built'
@@ -56,7 +56,7 @@ pipeline {
     stage('Run container') {
       steps {
         script {
-          sh 'docker run -itd -p 8081:8081 --name apiops-anypoint-jenkins-sapi  joji/apiops-anypoint-jenkins-sapi'
+          sh 'docker run -itd -p 8081:8081 --name apiops-anypoint-jenkins-sapi  sivendu/apiops-anypoint-jenkins-sapi'
         }
 
         echo 'container running'
