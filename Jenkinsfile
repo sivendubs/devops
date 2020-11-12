@@ -103,7 +103,8 @@ pipeline {
 
     post {
         failure {
-	    script {
+	    script {	
+		    	echo "$env.STAGE_NAME"
           		readProps= readProperties file: 'cucumber-API-Framework/email.properties'
 				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: 'Build Failed at $last_started Stage.\nPlease find attached logs for more details.', attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
                     }
