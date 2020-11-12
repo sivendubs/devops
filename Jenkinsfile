@@ -1,3 +1,4 @@
+def LAST_STARTED = " "
 pipeline {
     agent any
     tools {
