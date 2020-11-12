@@ -12,7 +12,6 @@ pipeline {
                     sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml sonar:sonar -Dsonar.sources=src/ -Dsonar.exclusions=**/*java*/** -Dsonar.test.exclusions=**/*java*/**"
                     script {
 			LAST_STARTED = env.STAGE_NAME
-			echo "$last_started"
                     timeout(time: 1, unit: 'HOURS') { 
                         sh "curl -u admin:admin -X GET -H 'Accept: application/json' http://localhost:9000/api/qualitygates/project_status?projectKey=com.mycompany:apiops-anypoint-jenkins-sapi > status.json"
                         def json = readJSON file:'status.json'
@@ -107,7 +106,7 @@ pipeline {
 		    	echo "$env.STAGE_NAME"
 		    	echo "$LAST_STARTED"
           		readProps= readProperties file: 'cucumber-API-Framework/email.properties'
-				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: 'Build Failed at Stage: $LAST_STARTED.\nPlease find attached logs for more details.', attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
+				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: 'Build Failed at Stage: $LAST_STARTED \nPlease find attached logs for more details.', attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
                     }
             
         }
