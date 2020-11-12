@@ -56,9 +56,9 @@ pipeline {
     }
 
     stage('Run container') {
-      steps {
-	      LAST_STARTED = env.STAGE_NAME
+      steps {   
               script {
+		      LAST_STARTED = env.STAGE_NAME
           	sh '/Applications/Docker.app/Contents/Resources/bin/docker run -itd -p 8081:8081 --name apiops-anypoint-jenkins-sapi  sivendu/apiops-anypoint-jenkins-sapi'
         	}
         echo 'container running'
@@ -66,19 +66,28 @@ pipeline {
     }
         stage ('Munit Test'){
         	steps {
-			    LAST_STARTED = env.STAGE_NAME
+			script {
+				LAST_STARTED = env.STAGE_NAME
+			       }
+			    
         		    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml test"
         	      }    
         }
         stage('Functional Testing'){
         	steps {
-			        LAST_STARTED = env.STAGE_NAME
+				script {
+				LAST_STARTED = env.STAGE_NAME
+			       }
+			        
         			sh "mvn -f cucumber-API-Framework/pom.xml test -Dtestfile=cucumber-API-Framework/src/test/javarunner.TestRunner.java"
              	      }
             }
         stage('Generate Reports') {
       		steps {
-			    LAST_STARTED = env.STAGE_NAME
+			   
+			script {
+				LAST_STARTED = env.STAGE_NAME
+			       }
         		    cucumber(failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: 'cucumber.json', jsonReportDirectory: 'cucumber-API-Framework/target', pendingStepsNumber: -1, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1)
                       }
             }
