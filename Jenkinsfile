@@ -18,6 +18,7 @@ pipeline {
                         if ("${json.projectStatus.status}" != "OK") {
                             	currentBuild.result = 'FAILURE'
                            		error('Pipeline aborted due to quality gate failure.')
+					echo "${error}"
                            }
                         }     
                     }
