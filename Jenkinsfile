@@ -1,4 +1,3 @@
-def LAST_STARTED = " "
 pipeline {
     agent any
     tools {
@@ -104,10 +103,8 @@ pipeline {
     post {
         failure {
 	    script {	
-		    	echo "$env.STAGE_NAME"
-		    	echo "$LAST_STARTED"
           		readProps= readProperties file: 'cucumber-API-Framework/email.properties'
-				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: 'Build Failed at Stage: "$LAST_STARTED" \nPlease find attached logs for more details.', attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
+				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: 'Please find attached logs for more details.', attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
                     }
             
         }
