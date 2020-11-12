@@ -46,7 +46,8 @@ pipeline {
       steps {
         script {
 		LAST_STARTED = env.STAGE_NAME
-          	sh "dockerImage= docker.build("sivendu/apiops-anypoint-jenkins-sapi")"
+          	/*sh "dockerImage= docker.build("sivendu/apiops-anypoint-jenkins-sapi")"*/
+		sh "docker build --tag="sivendu/apiops-anypoint-jenkins-sapi"
         }
 
         echo 'image built'
@@ -105,7 +106,7 @@ pipeline {
     post {
         failure {
 	    script {	
-		    	emailbody = "Failed Stage is $LAST_STARTED./nPlease find the attached logs for more details."
+		    	emailbody = "Current Build Failed at $LAST_STARTED Stage. Please find the attached logs for more details."
           		readProps= readProperties file: 'cucumber-API-Framework/email.properties'
 				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: "$emailbody", attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
                     }
