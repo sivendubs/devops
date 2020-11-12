@@ -50,8 +50,8 @@ pipeline {
       steps {
         script {
 		LAST_STARTED = env.STAGE_NAME
-          	dockerImage= /Applications/Docker.app/Contents/Resources/bin/docker.build("sivendu/apiops-anypoint-jenkins-sapi")
-		/*sh "docker build --tag= sivendu/apiops-anypoint-jenkins-sapi" */
+          	/*dockerImage= /Applications/Docker.app/Contents/Resources/bin/docker.build("sivendu/apiops-anypoint-jenkins-sapi")*/
+		sh "/Applications/Docker.app/Contents/Resources/bin/docker build --tag= sivendu/apiops-anypoint-jenkins-sapi ." 
         }
 
         echo 'image built'
