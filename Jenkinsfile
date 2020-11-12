@@ -1,3 +1,4 @@
+def LAST_STARTED
 pipeline {
     agent any
     tools {
@@ -44,7 +45,8 @@ pipeline {
        stage('Build image') {
       steps {
         script {
-          dockerImage= docker.build("joji/apiops-anypoint-jenkins-sapi")
+		LAST_STARTED = env.STAGE_NAME
+          	dockerImage= docker.build("joji/apiops-anypoint-jenkins-sapi")
         }
 
         echo 'image built'
@@ -62,6 +64,7 @@ pipeline {
     }
         stage ('Munit Test'){
         	steps {
+			    LAST_STARTED = env.STAGE_NAME
         		    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml test"
         	      }    
         }
@@ -103,10 +106,9 @@ pipeline {
     post {
         failure {
 	    script {	
-		    	def failedStages = getFailedStages( currentBuild )
-                	echo "Failed stages:\n" + failedStages.join('\n')
+		    	emailbody = "Failed Stage is $LAST_STARTED./nPlease find the attached logs for more details."
           		readProps= readProperties file: 'cucumber-API-Framework/email.properties'
-				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: 'Please find attached logs for more details.', attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
+				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: "$emailbody", attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
                     }
             
         }
