@@ -15,7 +15,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<db:config name="databaseConfig" doc:name="Database Config" doc:id="0588f32a-241d-4fd6-951f-5c2f424a6fe1" >
 		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
 	</db:config>
-	<configuration-properties doc:name="Configuration properties" doc:id="8927620b-104f-4b85-b958-0881963d4036" file="apios-jenkins-${env}.config.yaml" />
+	
 	<global-property doc:name="Global Property" doc:id="1d28ffe5-bb8d-4d11-a101-e76f010e33df" name="env" value="dev" />
 	<error-handler name="apios-anypoint-jenkins-global-error-handler" doc:id="cb21ef72-43a2-4760-8210-34218a19b93b" >
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c9013092-3e5c-4c63-a9fe-4464df54a9ef" type="DB:BAD_SQL_SYNTAX">
