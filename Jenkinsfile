@@ -11,14 +11,13 @@ pipeline {
                 withSonarQubeEnv('Sonarqube') {
                     sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml sonar:sonar -Dsonar.sources=src/ -Dsonar.exclusions=**/*java*/** -Dsonar.test.exclusions=**/*java*/**"
                     script {
+			last_started = env.STAGE_NAME
+			echo "$last_started"
                     timeout(time: 1, unit: 'HOURS') { 
                         sh "curl -u admin:admin -X GET -H 'Accept: application/json' http://localhost:9000/api/qualitygates/project_status?projectKey=com.mycompany:apiops-anypoint-jenkins-sapi > status.json"
                         def json = readJSON file:'status.json'
                         echo "${json.projectStatus}"
                         if ("${json.projectStatus.status}" != "OK") {
-                            	echo "Failure"
-				last_started = env.STAGE_NAME
-				echo "$last_started"
 				currentBuild.result = 'FAILURE'
                            		error('Pipeline aborted due to quality gate failure.')	
                            }
@@ -105,8 +104,10 @@ pipeline {
     post {
         failure {
 	    script {
+		    	echo "$env.STAGE_NAME"
+		    	echo "$ERROR"
           		readProps= readProperties file: 'cucumber-API-Framework/email.properties'
-				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: 'Please find attached logs.', attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
+				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: 'Build Failed at $last_started Stage.\nPlease find attached logs for more details.', attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
                     }
             
         }
