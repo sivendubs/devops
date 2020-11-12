@@ -64,7 +64,6 @@ pipeline {
     }
         stage ('Munit Test'){
         	steps {
-			    LAST_STARTED = env.STAGE_NAME
         		    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml test"
         	      }    
         }
