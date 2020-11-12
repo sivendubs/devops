@@ -39,6 +39,7 @@ pipeline {
     }*/
         stage('Build') {
             steps {
+		    	LAST_STARTED = env.STAGE_NAME
             		sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml clean install -DskipTests"
                   }    
         } 
@@ -46,8 +47,8 @@ pipeline {
       steps {
         script {
 		LAST_STARTED = env.STAGE_NAME
-          	/*sh "dockerImage= docker.build("sivendu/apiops-anypoint-jenkins-sapi")"*/
-		sh "docker build --tag= sivendu/apiops-anypoint-jenkins-sapi"
+          	dockerImage= /Applications/Docker.app/Contents/Resources/bin/docker.build("sivendu/apiops-anypoint-jenkins-sapi")
+		/*sh "docker build --tag= sivendu/apiops-anypoint-jenkins-sapi" */
         }
 
         echo 'image built'
@@ -56,36 +57,41 @@ pipeline {
 
     stage('Run container') {
       steps {
-        script {
-          sh 'docker run -itd -p 8081:8081 --name apiops-anypoint-jenkins-sapi  sivendu/apiops-anypoint-jenkins-sapi'
-        }
-
+	      LAST_STARTED = env.STAGE_NAME
+              script {
+          	sh '/Applications/Docker.app/Contents/Resources/bin/docker run -itd -p 8081:8081 --name apiops-anypoint-jenkins-sapi  sivendu/apiops-anypoint-jenkins-sapi'
+        	}
         echo 'container running'
       }
     }
         stage ('Munit Test'){
         	steps {
+			    LAST_STARTED = env.STAGE_NAME
         		    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml test"
         	      }    
         }
         stage('Functional Testing'){
         	steps {
+			        LAST_STARTED = env.STAGE_NAME
         			sh "mvn -f cucumber-API-Framework/pom.xml test -Dtestfile=cucumber-API-Framework/src/test/javarunner.TestRunner.java"
-             	  }
+             	      }
             }
         stage('Generate Reports') {
       		steps {
+			    LAST_STARTED = env.STAGE_NAME
         		    cucumber(failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: 'cucumber.json', jsonReportDirectory: 'cucumber-API-Framework/target', pendingStepsNumber: -1, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1)
-                  }
+                      }
             }
           /*stage('Archetype'){
         	steps {
+		    LAST_STARTED = env.STAGE_NAME
                     sh "mvn -f cucumber-API-Framework/pom.xml archetype:create-from-project"
                     sh "mvn -f cucumber-API-Framework/target/generated-sources/archetype/pom.xml clean install"
                   } 
         	}    
         stage('Deploy to Cloudhub'){
         	steps {
+		        LAST_STARTED = env.STAGE_NAME
         	    	sh 'mvn -f apiops-anypoint-jenkins-sapi/pom.xml package deploy -DmuleDeploy -Danypoint.username=joji4 -Danypoint.password=Canadavisa25@ -DapplicationName=apiops-anypoint-jenkins-sapi -Dcloudhub.region=us-east-2'
 			
              	  }
