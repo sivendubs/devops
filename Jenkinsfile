@@ -47,13 +47,13 @@ pipeline {
             		sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml clean install -DskipTests"
                   }    
         } 
-       /*stage('Build image') {
+       stage('Build image') {
       steps {
         script {
 		sh "ls -la"
 		LAST_STARTED = env.STAGE_NAME
           	/*dockerImage= /Applications/Docker.app/Contents/Resources/bin/docker.build("sivendu/apiops-anypoint-jenkins-sapi")*/
-		/*sh "/Applications/Docker.app/Contents/Resources/bin/docker build -t sivendu/apiops-anypoint-jenkins-sapi ." 
+		sh "/Applications/Docker.app/Contents/Resources/bin/docker build -t sivendu/apiops-anypoint-jenkins-sapi ." 
         }
 
         echo 'image built'
@@ -69,7 +69,7 @@ pipeline {
         echo 'container running'
       }
     }
-        stage ('Munit Test'){
+       /* stage ('Munit Test'){
         	steps {
 			script {
 				LAST_STARTED = env.STAGE_NAME
