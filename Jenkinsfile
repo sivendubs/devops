@@ -7,11 +7,12 @@ pipeline {
 	    
     }
    stages {
-    	stage('SonarQube Analysis'){
+    	/*stage('SonarQube Analysis'){
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml sonar:sonar -Dsonar.sources=src/ -Dsonar.exclusions=**/*java*/** -Dsonar.test.exclusions=**/*java*/**"
-                    script {
+                    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml sonar:sonar -Dsonar.sources=src/ -Dsonar.exclusions=**/*
+			    //java*/** -Dsonar.test.exclusions=**/*java*/**"
+                    /*script {
 			LAST_STARTED = env.STAGE_NAME
                     timeout(time: 1, unit: 'HOURS') { 
                         sh "curl -u admin:admin -X GET -H 'Accept: application/json' http://localhost:9000/api/qualitygates/project_status?projectKey=com.mycompany:apiops-anypoint-jenkins-sapi > status.json"
@@ -46,13 +47,13 @@ pipeline {
             		sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml clean install -DskipTests"
                   }    
         } 
-       stage('Build image') {
+       /*stage('Build image') {
       steps {
         script {
 		sh "ls -la"
 		LAST_STARTED = env.STAGE_NAME
           	/*dockerImage= /Applications/Docker.app/Contents/Resources/bin/docker.build("sivendu/apiops-anypoint-jenkins-sapi")*/
-		sh "/Applications/Docker.app/Contents/Resources/bin/docker build -t sivendu/apiops-anypoint-jenkins-sapi ." 
+		/*sh "/Applications/Docker.app/Contents/Resources/bin/docker build -t sivendu/apiops-anypoint-jenkins-sapi ." 
         }
 
         echo 'image built'
@@ -76,7 +77,7 @@ pipeline {
 			    
         		    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml test"
         	      }    
-        }
+        }*/
         stage('Functional Testing'){
         	steps {
 				script {
@@ -85,7 +86,7 @@ pipeline {
 			        
         			sh "mvn -f cucumber-API-Framework/pom.xml test -Dtestfile=cucumber-API-Framework/src/test/javarunner.TestRunner.java"
              	      }
-            }
+            } 
         stage('Generate Reports') {
       		steps {
 			   
@@ -116,7 +117,7 @@ pipeline {
 			script {
           		    readProps= readProperties file: 'cucumber-API-Framework/email.properties'
           		    echo "${readProps['email.to']}"
-        		    emailext(subject: 'Testing Reports for $PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: 'Please find the functional testing reports. In order to check the logs also, please go to url: $BUILD_URL'+readFile("apiops-anypoint-jenkins-sapi/emailTemplate.html"), attachmentsPattern: 'apiops-anypoint-jenkins-sapi/target/cucumber-reports/report.html', from: "${readProps['email.from']}", mimeType: "${readProps['email.mimeType']}", to: "${readProps['email.to']}")
+        		    emailext(subject: '$PROJECT_NAME - $JOB_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: 'Build is Success.Please find the functional testing reports. In order to check the logs also, please go to url: $BUILD_URL', attachmentsPattern: 'apiops-anypoint-jenkins-sapi/target/cucumber-reports/report.html', from: "${readProps['email.from']}", mimeType: "${readProps['email.mimeType']}", to: "${readProps['email.to']}")
                   }
 		}
            }    
