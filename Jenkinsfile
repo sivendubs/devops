@@ -115,9 +115,10 @@ pipeline {
     	stage('Email') {
       		steps {
 			script {
+			    emailbody = "Build is Success. Please find the attached functional testing reports. In order to check the logs, please go to url: $BUILD_URL"
           		    readProps= readProperties file: 'cucumber-API-Framework/email.properties'
           		    echo "${readProps['email.to']}"
-        		    emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', attachmentsPattern: 'cucumber-API-Framework/target/cucumber-reports/report.html', body: 'Build is Success.Please find the functional testing reports. In order to check the logs, please go to url: $BUILD_URL', from: "${readProps['email.from']}", mimeType: "${readProps['email.mimeType']}", to: "${readProps['email.to']}")
+        		    emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', attachmentsPattern: 'cucumber-API-Framework/target/cucumber-reports/report.html', body: "$emailbody", from: "${readProps['email.from']}", mimeType: "${readProps['email.mimeType']}", to: "${readProps['email.to']}")
                   }
 		}
            }    
