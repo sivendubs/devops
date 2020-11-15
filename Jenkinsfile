@@ -42,17 +42,21 @@ pipeline {
             steps {
 		    	script {
 				LAST_STARTED = env.STAGE_NAME
+				configFileProvider([configFile(fileId: 'ef71d2c9-9592-42c9-8de4-27a5a875801b', variable: 'Mvnsettings')]) {
+					sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml -s $Mvnsettings clean install -DskipTests"
+    
 			       }
 		    	
-            		sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml clean install -DskipTests"
+			}
+            		
                   }    
         } 
-       stage('Build image') {
+      /* stage('Build image') {
       steps {
         script {
 		sh "ls -la"
 		LAST_STARTED = env.STAGE_NAME
-          	/*dockerImage= /Applications/Docker.app/Contents/Resources/bin/docker.build("sivendu/apiops-anypoint-jenkins-sapi")*/
+          	//dockerImage= /Applications/Docker.app/Contents/Resources/bin/docker.build("sivendu/apiops-anypoint-jenkins-sapi")
 		sh "/Applications/Docker.app/Contents/Resources/bin/docker build -t sivendu/apiops-anypoint-jenkins-sapi ." 
         }
 
@@ -68,17 +72,19 @@ pipeline {
         	}
         echo 'container running'
       }
-    }
-       /* stage ('Munit Test'){
+    }*/
+        stage ('Munit Test'){
         	steps {
 			script {
 				LAST_STARTED = env.STAGE_NAME
+				configFileProvider([configFile(fileId: 'ef71d2c9-9592-42c9-8de4-27a5a875801b', variable: 'Mvnsettings')]) {
+					sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml -s $Mvnsettings test"
+					
 			       }
-			    
-        		    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml test"
-        	      }    
-        }*/
-        stage('Functional Testing'){
+			}
+        	 }    
+        }
+       /* stage('Functional Testing'){
         	steps {
 				script {
 				LAST_STARTED = env.STAGE_NAME
@@ -109,7 +115,7 @@ pipeline {
         	    	sh 'mvn -f apiops-anypoint-jenkins-sapi/pom.xml package deploy -DmuleDeploy -Danypoint.username=joji4 -Danypoint.password=Canadavisa25@ -DapplicationName=apiops-anypoint-jenkins-sapi -Dcloudhub.region=us-east-2'
 			
              	  }
-            }*/
+            }
         
  
     	stage('Email') {
@@ -121,7 +127,7 @@ pipeline {
         		    	emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: "$emailbody", attachmentsPattern: 'cucumber-API-Framework/target/cucumber-reports/report.html', from: "${readProps['email.from']}", to: "${readProps['email.to']}")
                   }
 		}
-           }    
+           }   */ 
     }
 
     post {
