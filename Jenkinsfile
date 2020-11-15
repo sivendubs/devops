@@ -51,7 +51,7 @@ pipeline {
             		
                   }    
         } 
-      /* stage('Build image') {
+      stage('Build image') {
       steps {
         script {
 		sh "ls -la"
@@ -72,7 +72,7 @@ pipeline {
         	}
         echo 'container running'
       }
-    }*/
+    }
         stage ('Munit Test'){
         	steps {
 			script {
@@ -84,7 +84,7 @@ pipeline {
 			}
         	 }    
         }
-       /* stage('Functional Testing'){
+       stage('Functional Testing'){
         	steps {
 				script {
 				LAST_STARTED = env.STAGE_NAME
