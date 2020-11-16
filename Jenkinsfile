@@ -10,7 +10,7 @@ pipeline {
     	stage('SonarQube Analysis'){
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml sonar:sonar -Dsonar.sources=src/ 
+                    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml sonar:sonar -Dsonar.sources=src/ "
                     script {
 			LAST_STARTED = env.STAGE_NAME
                     timeout(time: 1, unit: 'HOURS') { 
