@@ -7,7 +7,7 @@ pipeline {
 	    
     }
    stages {
-    	/*stage('SonarQube Analysis'){
+    	stage('SonarQube Analysis'){
             steps {
                 withSonarQubeEnv('Sonarqube') {
                     sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml sonar:sonar -Dsonar.sources=src/ -Dsonar.exclusions=**/
@@ -51,7 +51,7 @@ pipeline {
             		
                   }    
         } 
-      stage('Build image') {
+      /*stage('Build image') {
       steps {
         script {
 		sh "ls -la"
