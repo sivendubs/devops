@@ -10,9 +10,8 @@ pipeline {
     	stage('SonarQube Analysis'){
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml sonar:sonar -Dsonar.sources=src/ -Dsonar.exclusions=**/
-			    //*java*/** -Dsonar.test.exclusions=**/*java*/**"
-                    /*script {
+                    sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml sonar:sonar -Dsonar.sources=src/ 
+                    script {
 			LAST_STARTED = env.STAGE_NAME
                     timeout(time: 1, unit: 'HOURS') { 
                         sh "curl -u admin:admin -X GET -H 'Accept: application/json' http://localhost:9000/api/qualitygates/project_status?projectKey=com.mycompany:apiops-anypoint-jenkins-sapi > status.json"
