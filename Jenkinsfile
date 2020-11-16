@@ -57,7 +57,7 @@ pipeline {
 		sh "ls -la"
 		LAST_STARTED = env.STAGE_NAME
           	//dockerImage= /Applications/Docker.app/Contents/Resources/bin/docker.build("sivendu/apiops-anypoint-jenkins-sapi")
-		sh "/Applications/Docker.app/Contents/Resources/bin/docker build -t sivendu/apiops-anypoint-jenkins-sapi ." 
+		sh "/Applications/Docker.app/Contents/Resources/bin/docker build sivendu/apiops-anypoint-jenkins-sapi ." 
         }
 
         echo 'image built'
@@ -68,7 +68,7 @@ pipeline {
       steps {   
               script {
 		      LAST_STARTED = env.STAGE_NAME
-          	sh '/Applications/Docker.app/Contents/Resources/bin/docker run  -i -t -p 8082:8082 --name apiops-anypoint-jenkins-sapi  sivendu/apiops-anypoint-jenkins-sapi'
+          	sh '/Applications/Docker.app/Contents/Resources/bin/docker run -d -p 8082:8082 --name apiops-anypoint-jenkins-sapi  sivendu/apiops-anypoint-jenkins-sapi'
         	}
         echo 'container running'
       }
