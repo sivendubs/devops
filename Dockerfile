@@ -1,6 +1,6 @@
 FROM dhaks/mule4.3.0
 
-COPY wrapper.config /opt/mule/conf/
+COPY wrapper.conf /opt/mule/conf/
 
 COPY /apiops-anypoint-jenkins-sapi/target/*.jar /opt/mule/apps/
 
