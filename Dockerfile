@@ -1,4 +1,4 @@
-FROM javastreets/mule:latest-4
+FROM brogle/mule4-arm32v7
 
 COPY /apiops-anypoint-jenkins-sapi/target/*.jar /opt/mule/apps/
 
