@@ -1,7 +1,5 @@
 FROM dhaks/mule4.3.0
 
-COPY wrapper.conf /opt/mule/conf/
-
 COPY /apiops-anypoint-jenkins-sapi/target/*.jar /opt/mule/apps/
 
 EXPOSE 8082
