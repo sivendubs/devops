@@ -69,7 +69,7 @@ pipeline {
       steps {   
               script {
 		      LAST_STARTED = env.STAGE_NAME
-          	sh '/Applications/Docker.app/Contents/Resources/bin/docker run -p -d 8082:8082 --name apiops-anypoint-jenkins-sapi'
+          	sh '/Applications/Docker.app/Contents/Resources/bin/docker run -d -p 8082:8082 --name apiops-anypoint-jenkins-sapi'
 	      }
       }
     }
