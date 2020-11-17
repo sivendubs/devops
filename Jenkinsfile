@@ -73,14 +73,15 @@ pipeline {
 	      }
       }
     }
-    /*    stage ('Munit Test'){
+    stage ('Munit Test'){
         	steps {
 			script {
 				LAST_STARTED = env.STAGE_NAME
-				configFileProvider([configFile(fileId: 'ef71d2c9-9592-42c9-8de4-27a5a875801b', variable: 'Mvnsettings')]) {
-					sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml -s $Mvnsettings test"
+				//configFileProvider([configFile(fileId: 'ef71d2c9-9592-42c9-8de4-27a5a875801b', variable: 'Mvnsettings')]) {
+				//	sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml -s $Mvnsettings test"
+				sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml -Dhttp.port=8082 test"
 					
-			       }
+			      // }
 			}
         	 }    
         }
