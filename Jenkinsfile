@@ -7,7 +7,7 @@ pipeline {
 	    
     }
    stages {
-    	stage('SonarQube Analysis'){
+    /*	stage('SonarQube Analysis'){
             steps {
                 withSonarQubeEnv('Sonarqube') {
                     sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml sonar:sonar -Dsonar.sources=src/ "
@@ -41,16 +41,16 @@ pipeline {
             steps {
 		    	script {
 				LAST_STARTED = env.STAGE_NAME
-				configFileProvider([configFile(fileId: 'ef71d2c9-9592-42c9-8de4-27a5a875801b', variable: 'Mvnsettings')]) {
-					sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml -s $Mvnsettings clean install -DskipTests"
+				//configFileProvider([configFile(fileId: 'ef71d2c9-9592-42c9-8de4-27a5a875801b', variable: 'Mvnsettings')]) {
+					sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml clean install -DskipTests"
     
 			       }
 		    	
-			}
+			//}
             		
                   }    
         } 
-      /*stage('Build image') {
+      stage('Build image') {
       steps {
         script {
 		sh "ls -la"
@@ -67,12 +67,12 @@ pipeline {
       steps {   
               script {
 		      LAST_STARTED = env.STAGE_NAME
-          	sh '/Applications/Docker.app/Contents/Resources/bin/docker run -d --tty -p 8082:8082 --name apiops-anypoint-jenkins-sapi  sivendu/apiops-anypoint-jenkins-sapi'
+          	sh '/Applications/Docker.app/Contents/Resources/bin/docker run -d -p 8082:8082 apiops-anypoint-jenkins-sapi'
         	}
         echo 'container running'
       }
     }
-        stage ('Munit Test'){
+    /*    stage ('Munit Test'){
         	steps {
 			script {
 				LAST_STARTED = env.STAGE_NAME
