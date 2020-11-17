@@ -55,8 +55,8 @@ pipeline {
         script {
 		sh "ls -la"
 		LAST_STARTED = env.STAGE_NAME
-		sh "/Applications/Docker.app/Contents/Resources/bin/docker stop apiops-anypoint-jenkins-sapi" 
-        	sh "/Applications/Docker.app/Contents/Resources/bin/docker rm apiops-anypoint-jenkins-sapi"
+		//sh "/Applications/Docker.app/Contents/Resources/bin/docker stop apiops-anypoint-jenkins-sapi" 
+        	//sh "/Applications/Docker.app/Contents/Resources/bin/docker rm apiops-anypoint-jenkins-sapi"
           	//dockerImage= /Applications/Docker.app/Contents/Resources/bin/docker.build("sivendu/apiops-anypoint-jenkins-sapi")
 		sh "/Applications/Docker.app/Contents/Resources/bin/docker build -t sivendu/apiops-anypoint-jenkins-sapi ." 
         }
