@@ -17,7 +17,7 @@ Then I expect the values of src/test/resources/cucumberResources/registerCustome
 
 Scenario: Test the scheduler part
 Given I create a new request with http://localhost:8082/api/ service
-And I add the synchronize endpoint to the service
+And I add the synchronizeUsers endpoint to the service
 And I send the GET request to the service
 Then I get the 200 response code
 
