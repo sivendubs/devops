@@ -92,7 +92,7 @@ pipeline {
 				LAST_STARTED = env.STAGE_NAME
 			       }
 			        
-        			sh "mvn -f cucumber-API-Framework/pom.xml test -Dtestfile=cucumber-API-Framework/src/test/javarunner.TestRunner.java"
+        			sh "mvn -f cucumber-API-Framework/pom test -Dtestfile=cucumber-API-Framework/src/test/javarunner.TestRunner.java"
              	      }
             } 
         stage('Generate Reports') {
@@ -139,6 +139,10 @@ pipeline {
     post {
         failure {
 	    script {	
+		    	if ($LAST_STARTED == "Munit Test" or $LAST_STARTED == "Functional Testing" or $LAST_STARTED == "Archetype" or $LAST_STARTED == "Deploy to Cloudhub" ){
+				sh "/Applications/Docker.app/Contents/Resources/bin/docker stop apiops-anypoint-jenkins-sapi" 
+        		   	sh "/Applications/Docker.app/Contents/Resources/bin/docker rm apiops-anypoint-jenkins-sapi"
+			}
 		    	emailbody = "Current Build Failed at $LAST_STARTED Stage. Please find the attached logs for more details."
           		readProps= readProperties file: 'cucumber-API-Framework/email.properties'
 				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: "$emailbody", attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
