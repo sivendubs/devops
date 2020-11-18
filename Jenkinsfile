@@ -139,10 +139,10 @@ pipeline {
     post {
         failure {
 	    script {	
-		    	if ($LAST_STARTED == "Munit Test" || $LAST_STARTED == "Functional Testing" || $LAST_STARTED == "Archetype" || $LAST_STARTED == "Deploy to Cloudhub" ){
-				sh "/Applications/Docker.app/Contents/Resources/bin/docker stop apiops-anypoint-jenkins-sapi" 
-        		   	sh "/Applications/Docker.app/Contents/Resources/bin/docker rm apiops-anypoint-jenkins-sapi"
-			}
+		  //  	if ($LAST_STARTED == "Munit Test" || $LAST_STARTED == "Functional Testing" || $LAST_STARTED == "Archetype" || $LAST_STARTED == "Deploy to Cloudhub" ){
+		//		sh "/Applications/Docker.app/Contents/Resources/bin/docker stop apiops-anypoint-jenkins-sapi" 
+        	//	   	sh "/Applications/Docker.app/Contents/Resources/bin/docker rm apiops-anypoint-jenkins-sapi"
+		//	}
 		    	emailbody = "Current Build Failed at $LAST_STARTED Stage. Please find the attached logs for more details."
           		readProps= readProperties file: 'cucumber-API-Framework/email.properties'
 				emailext(subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', body: "$emailbody", attachLog: true, from: "${readProps['email.from']}", to: "${readProps['email.to']}")
