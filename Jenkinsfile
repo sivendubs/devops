@@ -139,7 +139,7 @@ pipeline {
     post {
         failure {
 	    script {	
-		    	if ($LAST_STARTED == "Munit Test" or $LAST_STARTED == "Functional Testing" or $LAST_STARTED == "Archetype" or $LAST_STARTED == "Deploy to Cloudhub" ){
+		    	if ($LAST_STARTED == "Munit Test" || $LAST_STARTED == "Functional Testing" || $LAST_STARTED == "Archetype" || $LAST_STARTED == "Deploy to Cloudhub" ){
 				sh "/Applications/Docker.app/Contents/Resources/bin/docker stop apiops-anypoint-jenkins-sapi" 
         		   	sh "/Applications/Docker.app/Contents/Resources/bin/docker rm apiops-anypoint-jenkins-sapi"
 			}
