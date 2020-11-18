@@ -106,11 +106,15 @@ pipeline {
             }
           /*stage('Archetype'){
         	steps {
-		    LAST_STARTED = env.STAGE_NAME
-                    sh "mvn -f cucumber-API-Framework/pom.xml archetype:create-from-project"
-                    sh "mvn -f cucumber-API-Framework/target/generated-sources/archetype/pom.xml clean install"
-                  } 
-        	}    
+			script {
+		    		LAST_STARTED = env.STAGE_NAME
+		    		configFileProvider([configFile(fileId: '706c4f0b-71dc-46f3-9542-b959e2d26ce7', variable: 'settings')]){
+                    			sh "mvn -f apiops-anypoint-jenkins-sapi/pom.xml -s $settings archetype:create-from-project"
+		    			sh "mvn -f apiops-anypoint-jenkins-sapi/target/generated-sources/archeype/pom.xml -s $settings clean deploy -DaltSnapshotDeploymentRepository=snapshots::http://admin:NjcNexus@123@104.248.169.167:8081/repository/maven-snapshots/"
+                  			} 
+		  		}
+        		}   
+		}
         stage('Deploy to Cloudhub'){
         	steps {
 		        LAST_STARTED = env.STAGE_NAME
